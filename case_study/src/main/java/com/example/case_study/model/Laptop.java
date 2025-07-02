@@ -2,12 +2,16 @@ package com.example.case_study.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "laptops")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Laptop {
 
     @Id
