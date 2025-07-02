@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cập nhật</title>
+</head>
+<body>
+<h1>Cập Nhật</h1>
+<form action="#" th:action="@{/product/update}" th:object="${product}" method="post">
+    <input type="hidden" th:field="*{product.id}"/>
+    <div>
+        <label for="name">Tên sản phẩm:</label>
+        <input type="text" id="name" th:field="*{name}" required/>
+    </div>
+    <div>
+        <label for="price">Giá:</label>
+        <input type="number" id="price" th:field="*{price}" required/>
+    </div>
+    <button type="submit">Cập nhật</button>
+</body>
+</html>
