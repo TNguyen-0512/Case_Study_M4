@@ -1,13 +1,13 @@
 package com.example.case_study.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,7 +18,7 @@ public class Order {
 
     private LocalDateTime orderDate;
 
-    private String status; // NEW, PROCESSING, DONE
+    private String status;  // NEW, PROCESSING, DONE
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
