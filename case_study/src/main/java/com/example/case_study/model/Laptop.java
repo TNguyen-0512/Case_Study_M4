@@ -1,129 +1,109 @@
 package com.example.case_study.model;
+
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "laptops")
+@Table(name = "laptop")
+@Getter
+@Setter
 public class Laptop {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_laptop")
+    private Integer idLaptop;
 
-    @Column(nullable = false, length = 200)
-    private String name;
+    @Column(name = "ten_laptop", length = 200, nullable = false)
+    private String tenLaptop;
 
-    @Column(nullable = false, length = 100)
-    private String brand;
+    @Column(name = "model", length = 100)
+    private String model;
 
-    @Column(nullable = false)
-    private BigDecimal price;
+    @ManyToOne
+    @JoinColumn(name = "id_thuong_hieu")
+    private ThuongHieu thuongHieu;
 
-    @Column(nullable = false, length = 500)
-    private String configuration;
+    @ManyToOne
+    @JoinColumn(name = "id_danh_muc")
+    private DanhMuc danhMuc;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @Column(name = "gia_ban", precision = 15, scale = 2, nullable = false)
+    private BigDecimal giaBan;
 
-    private Integer stockQuantity;
+    @Column(name = "gia_nhap", precision = 15, scale = 2)
+    private BigDecimal giaNhap;
 
-    private LocalDateTime createdAt;
+    @Column(name = "cpu", length = 100)
+    private String cpu;
 
-    private LocalDateTime updatedAt;
+    @Column(name = "ram", length = 50)
+    private String ram;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(name = "o_cung", length = 100)
+    private String oCung;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = createdAt;
-    }
+    @Column(name = "card_do_hoa", length = 100)
+    private String cardDoHoa;
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @Column(name = "man_hinh", length = 100)
+    private String manHinh;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "pin", length = 50)
+    private String pin;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "trong_luong", length = 20)
+    private String trongLuong;
 
-    public String getName() {
-        return name;
-    }
+    @Column(name = "he_dieu_hanh", length = 50)
+    private String heDieuHanh;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "mau_sac", length = 50)
+    private String mauSac;
 
-    public String getBrand() {
-        return brand;
-    }
+    @Column(name = "mo_ta_ngan", columnDefinition = "TEXT")
+    private String moTaNgan;
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
+    @Column(name = "mo_ta_chi_tiet", columnDefinition = "LONGTEXT")
+    private String moTaChiTiet;
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+    @Column(name = "hinh_anh_chinh", length = 255)
+    private String hinhAnhChinh;
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+    @Column(name = "so_luong_ton")
+    private Integer soLuongTon = 0;
 
-    public String getConfiguration() {
-        return configuration;
-    }
+    @Column(name = "so_luong_ban")
+    private Integer soLuongBan = 0;
 
-    public void setConfiguration(String configuration) {
-        this.configuration = configuration;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "trang_thai", length = 20)
+    private TrangThai trangThai = TrangThai.Còn_hàng;
 
-    public String getDescription() {
-        return description;
-    }
+    @Column(name = "slug", length = 255, unique = true)
+    private String slug;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @Column(name = "meta_title", length = 255)
+    private String metaTitle;
 
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
+    @Column(name = "meta_description", columnDefinition = "TEXT")
+    private String metaDescription;
 
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
+    @Column(name = "ngay_tao")
+    private LocalDateTime ngayTao = LocalDateTime.now();
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    @Column(name = "ngay_cap_nhat")
+    private LocalDateTime ngayCapNhat = LocalDateTime.now();
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    @Column(name = "ngay_ra_mat")
+    private LocalDate ngayRaMat;
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
+    public enum TrangThai {
+        Còn_hàng, Hết_hàng, Ngừng_bán, Sắp_về
     }
 }
+
