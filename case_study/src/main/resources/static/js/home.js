@@ -1,21 +1,21 @@
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+document.addEventListener("DOMContentLoaded", function () {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate');
-        }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                observer.unobserve(entry.target); // chỉ animate 1 lần
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach((el, index) => {
+        el.style.transitionDelay = `${index * 0.1}s`; // stagger delay
+        observer.observe(el);
     });
-}, observerOptions);
-
-document.querySelectorAll('.animate-on-scroll').forEach(el => {
-    observer.observe(el);
 });
 
-// Add stagger animation delay
-document.querySelectorAll('.product-card').forEach((card, index) => {
-    card.style.transitionDelay = `${index * 0.1}s`;
-});

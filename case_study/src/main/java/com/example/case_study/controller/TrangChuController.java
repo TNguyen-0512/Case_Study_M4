@@ -20,7 +20,7 @@ public class TrangChuController {
     @Autowired
     private LaptopService laptopService;
 
-    @GetMapping("/")
+    @GetMapping({"product","/"})
     public String home(HttpServletRequest request, Model model,
                        @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.ASC, "tenLaptop"));
