@@ -1,65 +1,34 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Đăng nhập</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Nhập - TechStore</title>
-    <link rel="stylesheet" href="/static/css/login.css">
-    <script src="/static/js/login.js"></script>
 </head>
 <body>
-<div class="login-container">
-    <div class="logo">
-        <h1>💻 TechStore</h1>
-        <p>Cửa hàng máy tính uy tín #1</p>
+<h1>Đăng nhập hệ thống</h1>
+
+<form th:action="@{/login}" method="post">
+    <div>
+        <label for="username">Tên đăng nhập:</label>
+        <input type="text" id="username" name="username" required>
     </div>
 
-    <form action="/login" method="post" id="loginForm">
-        <div class="form-group">
-            <label for="username">Tên đăng nhập hoặc Email</label>
-            <div class="input-wrapper">
-                <input type="text" id="username" name="username" required autocomplete="username">
-                <span class="input-icon">👤</span>
-            </div>
-            <div class="error-message" id="usernameError">Vui lòng nhập tên đăng nhập</div>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Mật khẩu</label>
-            <div class="input-wrapper">
-                <input type="password" id="password" name="password" required autocomplete="current-password">
-                <span class="input-icon">🔒</span>
-            </div>
-            <div class="error-message" id="passwordError">Vui lòng nhập mật khẩu</div>
-        </div>
-
-        <button type="submit" class="login-btn" id="loginBtn">
-            <span class="loading" id="loading"></span>
-            <span id="btnText">Đăng Nhập</span>
-        </button>
-
-        <div class="forgot-password">
-            <a href="/forgot-password">Quên mật khẩu?</a>
-        </div>
-    </form>
-
-    <div class="divider">
-        <span>hoặc</span>
+    <div>
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="password" required>
     </div>
 
-    <div class="form-footer">
-        <a href="/register">📝 Tạo tài khoản mới</a>
+    <div>
+        <button type="submit">Đăng nhập</button>
     </div>
 
-    <div class="features">
-        <h3>🎯 Lợi ích thành viên</h3>
-        <ul>
-            <li>Giá ưu đãi độc quyền</li>
-            <li>Tích điểm đổi quà</li>
-            <li>Hỗ trợ kỹ thuật 24/7</li>
-            <li>Bảo hành mở rộng</li>
-        </ul>
+    <div th:if="${param.error}">
+        <p style="color:red;">Tên đăng nhập hoặc mật khẩu không đúng!</p>
     </div>
-</div>
+
+    <div th:if="${param.logout}">
+        <p style="color:green;">Bạn đã đăng xuất thành công!</p>
+    </div>
+</form>
 </body>
 </html>

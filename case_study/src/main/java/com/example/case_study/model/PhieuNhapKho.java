@@ -12,7 +12,7 @@ public class PhieuNhapKho {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_phieu_nhap")
-    private Long idPhieuNhap;
+    private Integer idPhieuNhap;
 
     @Column(name = "ma_phieu_nhap", nullable = false, unique = true, length = 20)
     private String maPhieuNhap;

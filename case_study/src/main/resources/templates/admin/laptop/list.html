@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Danh sách Laptop</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h1>Danh sách Laptop</h1>
+  <a th:href="@{/admin/laptop/create}" class="btn btn-primary">Thêm mới Laptop</a>
+  <table class="table table-bordered table-striped table-dark">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tên Laptop</th>
+      <th>Model</th>
+      <th>Giá bán</th>
+      <th>Số lượng tồn</th>
+      <th>Trạng thái</th>
+      <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="laptop : ${laptops}">
+      <td th:text="${laptop.idLaptop}"></td>
+      <td th:text="${laptop.tenLaptop}"></td>
+      <td th:text="${laptop.model}"></td>
+      <td th:text="${laptop.giaBan.intValue()} + ' ₫'"></td>
+      <td th:text="${laptop.soLuongTon}"></td>
+      <td th:text="${laptop.trangThai}"></td>
+      <td>
+        <a th:href="@{'/admin/laptop/view/update/' + ${laptop.idLaptop}}" class="btn btn-sm btn-warning">Sửa</a>
+        <a th:href="@{'/admin/laptop/view/delete/' + ${laptop.idLaptop}}" class="btn btn-sm btn-danger"
+           onclick="return confirm('Bạn có chắc chắn muốn xoá?')">Xoá</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

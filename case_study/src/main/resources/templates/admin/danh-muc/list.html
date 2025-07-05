@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý Danh mục</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2><i class="fas fa-tags"></i> Quản lý Danh mục</h2>
+          <a th:href="@{/admin/danh-muc/create}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm mới
+          </a>
+        </div>
+        <div class="card-body">
+          <!-- Bộ lọc -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm theo tên...">
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="filterTrangThai">
+                <option value="">Tất cả trạng thái</option>
+                <option value="Hoạt_động">Hoạt động</option>
+                <option value="Ẩn">Ẩn</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-outline-secondary" onclick="clearFilters()">
+                <i class="fas fa-times"></i> Xóa bộ lọc
+              </button>
+            </div>
+          </div>
+
+          <!-- Bảng danh sách -->
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Tên danh mục</th>
+                <th>Mô tả</th>
+                <th>Thứ tự hiển thị</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="danhMuc : ${danhMucs}">
+                <td th:text="${danhMuc.idDanhMuc}"></td>
+                <td>
+                  <strong th:text="${danhMuc.tenDanhMuc}"></strong>
+                </td>
+                <td>
+                  <span th:text="${danhMuc.moTa != null ? (danhMuc.moTa.length() > 50 ? danhMuc.moTa.substring(0, 50) + '...' : danhMuc.moTa) : 'Không có mô tả'}"></span>
+                </td>
+                <td>
+                  <span class="badge bg-info" th:text="${danhMuc.thuTuHienThi}"></span>
+                </td>
+                <td>
+                                    <span th:class="${danhMuc.trangThai.name() == 'Hoạt_động'} ? 'badge bg-success' : 'badge bg-secondary'"
+                                          th:text="${danhMuc.trangThai.name() == 'Hoạt_động' ? 'Hoạt động' : 'Ẩn'}"></span>
+                </td>
+                <td th:text="${#temporals.format(danhMuc.ngayTao, 'dd/MM/yyyy HH:mm')}"></td>
+                <td>
+                  <div class="btn-group" role="group">
+                    <a th:href="@{'/admin/danh-muc/update/' + ${danhMuc.idDanhMuc}}"
+                       class="btn btn-sm btn-warning" title="Chỉnh sửa">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <a th:href="@{'/admin/danh-muc/delete/' + ${danhMuc.idDanhMuc}}"
+                       class="btn btn-sm btn-danger" title="Xóa"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Thông tin tổng quan -->
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <small class="text-muted">
+                Tổng cộng: <span th:text="${#lists.size(danhMucs)}"></span> danh mục
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Tìm kiếm
+  document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const tenDanhMuc = row.cells[1].textContent.toLowerCase();
+      const moTa = row.cells[2].textContent.toLowerCase();
+
+      if (tenDanhMuc.includes(searchTerm) || moTa.includes(searchTerm)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+
+  // Lọc theo trạng thái
+  document.getElementById('filterTrangThai').addEventListener('change', function() {
+    const filterValue = this.value;
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const trangThai = row.cells[4].textContent.trim();
+
+      if (filterValue === '' ||
+              (filterValue === 'Hoạt_động' && trangThai === 'Hoạt động') ||
+              (filterValue === 'Ẩn' && trangThai === 'Ẩn')) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+
+  // Xóa bộ lọc
+  function clearFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('filterTrangThai').value = '';
+
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => row.style.display = '');
+  }
+</script>
+</body>
+</html>

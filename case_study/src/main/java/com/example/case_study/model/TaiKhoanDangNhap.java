@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tai_khoan_dang_nhap")
+@Table(name = "nguoi_dung")
 @Getter
 @Setter
 public class TaiKhoanDangNhap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tai_khoan")
-    private Integer idTaiKhoan;
+    @Column(name = "id_nguoi_dung")
+    private Integer idNguoiDung;
 
     @Column(name = "ten_dang_nhap", length = 50, nullable = false, unique = true)
     private String tenDangNhap;
