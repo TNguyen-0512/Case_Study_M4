@@ -1,5 +1,6 @@
 package com.example.case_study.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,9 @@ public class DanhMuc {
     private LocalDateTime ngayTao = LocalDateTime.now();
 
     public enum TrangThai {
-        Hoạt_động, Ẩn
+        @JsonProperty("Hoạt động")
+        Hoạt_động,
+        Ẩn
     }
-}
 
+}

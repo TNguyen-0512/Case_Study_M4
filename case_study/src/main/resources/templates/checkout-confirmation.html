@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác nhận đơn hàng</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .checkout-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+
+<body>
+<div class="container mt-5 pt-5">
+    <div class="checkout-card">
+        <h2 class="text-center mb-4">🧾 Xác nhận đơn hàng</h2>
+
+        <!-- Thông tin khách hàng -->
+        <div th:if="${khachHang != null}" class="mb-4">
+            <h5 class="mb-3">Thông tin khách hàng</h5>
+            <p><strong>Họ tên:</strong> <span th:text="${khachHang.hoTen}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${khachHang.email}"></span></p>
+            <p><strong>Số điện thoại:</strong> <span th:text="${khachHang.soDienThoai}"></span></p>
+            <p><strong>Địa chỉ:</strong> <span th:text="${khachHang.diaChi}"></span></p>
+        </div>
+
+        <!-- Danh sách sản phẩm -->
+        <h5 class="mb-3">Chi tiết sản phẩm</h5>
+        <table class="table table-bordered table-hover">
+            <thead class="table-secondary">
+            <tr>
+                <th>Tên laptop</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${selectedItems}">
+                <td th:text="${item.tenLaptop}"></td>
+                <td th:text="${item.soLuong}"></td>
+                <td th:text="${#numbers.formatDecimal(item.gia, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+                <td th:text="${#numbers.formatDecimal(item.tongTien, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Tổng tiền -->
+        <h5 class="text-end text-primary mt-4">
+            Tổng tiền:
+            <span th:text="${#numbers.formatDecimal(tongTien, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+        </h5>
+
+        <!-- Form xác nhận -->
+        <form th:action="@{/cart/confirm}" method="post" class="text-end mt-4" onsubmit="return handleSubmit(this)">
+            <div th:each="item : ${selectedItems}">
+                <input type="hidden" name="ids" th:value="${item.id}" />
+            </div>
+            <a th:href="@{/cart}" class="btn btn-secondary me-2">Quay lại giỏ hàng</a>
+
+            <!-- Nút xác nhận -->
+            <button type="submit" class="btn btn-success" id="submitButton">
+                <span class="spinner-border spinner-border-sm me-1 d-none" id="spinner" role="status" aria-hidden="true"></span>
+                <span id="buttonText">Xác nhận mua hàng</span>
+            </button>
+            <div class="form-group text-start mt-3">
+                <label for="phuongThucThanhToan"><strong>Phương thức thanh toán:</strong></label>
+                <select class="form-select" id="phuongThucThanhToan" name="phuongThucThanhToan" required>
+                    <option value="Tien_mat">Tiền mặt</option>
+                    <option value="Chuyen_khoan">Chuyển khoản</option>
+                    <option value="The_tin_dung">Thẻ tín dụng</option>
+                    <option value="Vi_dien_tu">Ví điện tử</option>
+                </select>
+            </div>
+
+
+        </form>
+
+        <!-- Script xử lý khi submit -->
+        <script>
+            function handleSubmit(form) {
+                const button = document.getElementById('submitButton');
+                const spinner = document.getElementById('spinner');
+                const text = document.getElementById('buttonText');
+
+                spinner.classList.remove('d-none'); // Hiện spinner
+                text.textContent = 'Đang xử lý...'; // Đổi nội dung
+                button.disabled = true; // Vô hiệu hoá nút
+                return true; // Tiếp tục submit form
+            }
+        </script>
+
+
+    </div>
+</div>
+</body>
+</html>

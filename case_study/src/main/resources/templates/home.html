@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ - NTNLaptop</title>
+    <th:block th:insert="~{/layout::library}"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script th:src="@{/js/home.js}" defer></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" th:href="@{/}">
+            <i class="fas fa-laptop me-2"></i>NTNLaptop
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link active" th:href="@{/}"><i class="fas fa-home me-1"></i>Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/laptop}"><i class="fas fa-laptop-code me-1"></i>Sản phẩm</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/about}"><i class="fas fa-info-circle me-1"></i>Giới thiệu</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/contact}"><i class="fas fa-phone me-1"></i>Liên hệ</a></li>
+                <li class="nav-item position-relative">
+                    <a class="nav-link" th:href="@{/cart}">
+                        <i class="fas fa-shopping-cart me-1"></i>Giỏ hàng
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+                              th:text="${cartItemCount != null ? cartItemCount : 0}">0</span>
+                    </a>
+                </li>
+                <li class="nav-item d-flex" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light ms-3" th:href="@{/login}"><i class="fas fa-sign-in-alt me-1"></i> Đăng nhập</a>
+                    <a class="btn btn-warning ms-2" th:href="@{/register}"><i class="fas fa-user-plus me-1"></i> Đăng ký</a>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="btn btn-outline-light ms-3 dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i><span sec:authentication="name"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" th:href="@{/profile}">Trang cá nhân</a></li>
+                        <li><a class="dropdown-item" th:href="@{/don-hang}">Đơn hàng</a></li> <!-- ✅ thêm dòng này -->
+                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section mt-5 pt-5">
+    <div class="container-custom">
+        <h1 class="hero-title"><i class="fas fa-laptop me-3"></i>NTNLaptop</h1>
+        <p class="hero-subtitle">Khám phá bộ sưu tập laptop cao cấp với công nghệ tiên tiến nhất</p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number" th:text="${productCount} + '+'"></div>
+                <div class="stat-label">Sản phẩm</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Khách hàng</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Hỗ trợ</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sản phẩm nổi bật (giới hạn 3) -->
+<div class="container-custom">
+    <h2 class="section-title animate-on-scroll">Sản phẩm nổi bật</h2>
+    <p class="section-subtitle animate-on-scroll">Top 3 sản phẩm được yêu thích nhất</p>
+    <div class="product-grid" th:if="${products != null and !products.isEmpty()}">
+        <div class="product-card animate-on-scroll" th:each="product, stat : ${products}" th:if="${stat.index < 3}">
+            <div class="product-image">
+                <img th:src="@{/images/laptop/{img}(img=${product.hinhAnhChinh})}" class="product-img"
+                     th:alt="${product.tenLaptop}">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title" th:text="${product.tenLaptop}"></h3>
+                <div class="product-brand">
+                    <i class="fas fa-award"></i>
+                    <span th:text="${product.thuongHieu.tenThuongHieu}"></span>
+                </div>
+                <div class="product-price"
+                     th:text="${#numbers.formatDecimal(product.giaBan, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}"></div>
+                <div class="product-features">
+                    <span class="feature-tag" th:text="${product.cpu}"></span>
+                    <span class="feature-tag" th:text="${product.ram}"></span>
+                    <span class="feature-tag" th:text="${product.oCung}"></span>
+                    <span class="feature-tag" th:text="${product.manHinh}"></span>
+                </div>
+                <div class="product-actions">
+                    <a class="btn btn-outline-primary btn-sm"
+                       th:href="@{'/laptop/detail/' + ${product.idLaptop}}">
+                        <i class="fas fa-eye me-1"></i> Xem chi tiết
+                    </a>
+
+                    <button class="btn-primary-custom add-to-cart-btn" th:data-id="${product.idLaptop}">
+                        <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-5" th:if="${products == null or products.isEmpty()}">
+        <p class="text-danger fs-5">Không có sản phẩm nào để hiển thị!</p>
+    </div>
+</div>
+
+<!-- Giới thiệu cuối trang -->
+<footer class="bg-dark text-light py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Về NTNLaptop</h4>
+                <p>NTNLaptop là cửa hàng chuyên cung cấp các dòng laptop chính hãng, hiệu năng cao từ các thương hiệu uy tín như Dell, HP, Asus, Lenovo,...</p>
+                <p>Chúng tôi cam kết chất lượng, bảo hành minh bạch và hỗ trợ tận tình.</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Thông tin liên hệ</h4>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-map-marker-alt me-2"></i>123 Nguyễn Văn Linh, Đà Nẵng</li>
+                    <li><i class="fas fa-phone me-2"></i>0123 456 789</li>
+                    <li><i class="fas fa-envelope me-2"></i>ntnlaptop@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="border-light">
+        <div class="text-center">© 2025 NTNLaptop. All rights reserved.</div>
+    </div>
+</footer>
+
+</body>
+
+</html>

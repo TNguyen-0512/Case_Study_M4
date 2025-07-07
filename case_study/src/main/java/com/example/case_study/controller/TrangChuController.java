@@ -17,17 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/")
 public class TrangChuController {
+
     @Autowired
     private LaptopService laptopService;
 
-    @GetMapping({"product","/"})
-    public String home(HttpServletRequest request, Model model,
-                       @RequestParam(defaultValue = "0") int page) {
+    @GetMapping
+    public String home(Model model, @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.ASC, "tenLaptop"));
         Page<Laptop> laptops = laptopService.findAll(pageable);
-        long totalItems = laptopService.countAll();
+
+        // Debug in console
+        System.out.println("===> Danh sách laptop:");
+        laptops.getContent().forEach(l -> System.out.println(l.getTenLaptop()));
+
         model.addAttribute("products", laptops.getContent());
-        model.addAttribute("productCount", totalItems);
-        return "product/list";
+        model.addAttribute("productCount", laptopService.countAll());
+        return "home"; // src/main/resources/templates/home.html
     }
 }

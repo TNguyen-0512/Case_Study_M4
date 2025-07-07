@@ -18,4 +18,6 @@ public interface DonHangRepository extends JpaRepository<DonHang, Integer> {
             "GROUP BY thang ORDER BY thang",
             nativeQuery = true)
     List<Object[]> doanhThuTheoThang();
+    List<DonHang> findByKhachHang_IdKhachHang(Integer idKhachHang);
+
 }

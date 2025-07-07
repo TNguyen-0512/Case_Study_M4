@@ -28,5 +28,8 @@ public class ChiTietDonHang {
     private Integer soLuong;
 
     private BigDecimal thanhTien;
+
+    public void setGia(BigDecimal gia) {
+    }
 }
 

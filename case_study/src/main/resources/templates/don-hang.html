@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Đơn hàng của tôi</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/don-hang.css}">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .card {
+      border-radius: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    table th, table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container mt-5 pt-5">
+  <h2 class="mb-4">🧾 Đơn hàng của tôi</h2>
+
+  <div th:if="${donHangs != null and !donHangs.isEmpty()}">
+    <div th:each="don : ${donHangs}" class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>Mã đơn hàng: <span th:text="${don.maDonHang}"></span></h5>
+        <p>Ngày đặt: <span th:text="${#temporals.format(don.ngayDatHang.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></span></p>
+
+        <p>Trạng thái:
+          <span th:switch="${don.trangThaiDonHang}">
+            <span th:case="'Cho_xac_nhan'" class="badge bg-warning">Chờ xác nhận</span>
+            <span th:case="'Dang_giao'" class="badge bg-primary">Đang giao</span>
+            <span th:case="'Da_giao'" class="badge bg-success">Đã giao</span>
+            <span th:case="'Huy'" class="badge bg-danger">Đã hủy</span>
+            <span th:case="*" class="badge bg-secondary" th:text="${don.trangThaiDonHang}">Khác</span>
+          </span>
+        </p>
+
+        <p>Thanh toán:
+          <span th:switch="${don.trangThaiThanhToan}">
+            <span th:case="'Chua_thanh_toan'" class="badge bg-warning">Chưa thanh toán</span>
+            <span th:case="'Da_thanh_toan'" class="badge bg-success">Đã thanh toán</span>
+            <span th:case="*" class="badge bg-secondary" th:text="${don.trangThaiThanhToan}">Khác</span>
+          </span>
+        </p>
+
+        <p>Phương thức thanh toán: <span th:text="${don.phuongThucThanhToan}"></span></p>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <p><strong>Người nhận:</strong> <span th:text="${don.tenNguoiNhan}"></span></p>
+            <p><strong>Điện thoại:</strong> <span th:text="${don.soDienThoaiNguoiNhan}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${don.emailNguoiNhan}"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Địa chỉ giao hàng:</strong></p>
+            <p th:text="${don.diaChiGiaoHang}"></p>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <div class="row">
+            <div class="col-md-4">
+              <p>Tổng tiền hàng: <span class="fw-bold" th:text="${#numbers.formatDecimal(don.tongTienHang, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span></p>
+            </div>
+            <div class="col-md-4">
+              <p>Phí vận chuyển: <span class="fw-bold" th:text="${#numbers.formatDecimal(don.phiVanChuyen, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span></p>
+            </div>
+            <div class="col-md-4">
+              <p>Tiền giảm giá: <span class="fw-bold text-success" th:text="${#numbers.formatDecimal(don.tienGiamGia, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-top pt-3 mt-3">
+          <p class="h5">Tổng thanh toán: <span class="fw-bold text-danger" th:text="${#numbers.formatDecimal(don.tongThanhToan, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span></p>
+        </div>
+
+        <div th:if="${don.ghiChu != null and !don.ghiChu.isEmpty()}" class="mt-3">
+          <p><strong>Ghi chú:</strong> <span th:text="${don.ghiChu}"></span></p>
+        </div>
+
+        <!-- Chi tiết đơn hàng -->
+        <div th:if="${don.chiTietDonHangList != null and !don.chiTietDonHangList.isEmpty()}" class="mt-4">
+          <h6>Chi tiết đơn hàng:</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="table-light">
+              <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="chiTiet : ${don.chiTietDonHangList}">
+                <td th:text="${chiTiet.laptop.tenLaptop}"></td>
+                <td th:text="${chiTiet.soLuong}"></td>
+                <td th:text="${#numbers.formatDecimal(chiTiet.giaBan, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+                <td th:text="${#numbers.formatDecimal(chiTiet.thanhTien, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div th:if="${donHangs == null or donHangs.isEmpty()}">
+    <div class="alert alert-info text-center">
+      <h5>Chưa có đơn hàng nào</h5>
+      <p class="mb-0">Bạn chưa có đơn hàng nào. Hãy mua sắm ngay!</p>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

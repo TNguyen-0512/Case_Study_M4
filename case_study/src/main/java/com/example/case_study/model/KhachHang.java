@@ -30,7 +30,8 @@ public class KhachHang {
 
     @OneToOne
     @JoinColumn(name = "id_tai_khoan")
-    private TaiKhoanDangNhap taiKhoanDangNhap;
+    private TaiKhoanDangNhap taiKhoan;
+
 
     public enum GioiTinh {
         Nam, Nữ, Khác

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang cá nhân - NTNLaptop</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body>
+<div class="profile-container">
+    <h2>Thông tin cá nhân</h2>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <table class="profile-table">
+        <tr><th>Họ tên:</th><td th:text="${khachHang.hoTen}"></td></tr>
+        <tr><th>Email:</th><td th:text="${khachHang.email}"></td></tr>
+        <tr><th>Số điện thoại:</th><td th:text="${khachHang.soDienThoai}"></td></tr>
+        <tr><th>Địa chỉ:</th><td th:text="${khachHang.diaChi}"></td></tr>
+    </table>
+
+    <div class="buttons">
+        <a class="btn btn-primary" th:href="@{/profile/edit}">Chỉnh sửa</a>
+        <a class="btn btn-secondary" th:href="@{/}">Quay về Trang chủ</a>
+    </div>
+</div>
+</body>
+</html>

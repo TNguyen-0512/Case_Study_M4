@@ -1,0 +1,91 @@
+    <!DOCTYPE html>
+    <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Giỏ hàng</title>
+        <th:block th:insert="~{/layout::library}"/>
+        <script>
+            function updateTotal() {
+                let total = 0;
+                document.querySelectorAll('input[name="selectedIds"]:checked').forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const tongTienText = row.querySelector('.item-total').innerText.replace(/[^\d]/g, '');
+                    total += parseInt(tongTienText);
+                });
+                const formatted = new Intl.NumberFormat('vi-VN').format(total) + ' VNĐ';
+                document.getElementById("selectedTotal").innerText = formatted;
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll('input[name="selectedIds"]').forEach(cb => {
+                    cb.addEventListener("change", updateTotal);
+                });
+            });
+        </script>
+    </head>
+    <body>
+    <div class="container mt-5 pt-4">
+        <h2>Giỏ hàng của bạn</h2>
+
+        <!-- FORM bắt đầu -->
+        <form th:action="@{/cart/checkout}" method="post">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Chọn</th>
+                    <th>Ảnh</th>
+                    <th>Tên</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cartItems}">
+                    <td>
+                        <input type="checkbox" name="selectedIds" th:value="${item.id}" />
+                    </td>
+                    <td><img th:src="@{/images/laptop/{img}(img=${item.hinhAnh})}" width="100"/></td>
+                    <td th:text="${item.tenLaptop}"></td>
+                    <td th:text="${#numbers.formatDecimal(item.gia, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}"></td>
+                    <td>
+                    <td>
+                        <form th:action="@{/cart/update/{id}(id=${item.id})}" method="post">
+                            <input type="number"
+                                   name="soLuong"
+                                   min="1"
+                                   th:value="${item.soLuong}"
+                                   class="form-control form-control-sm"
+                                   style="width: 70px;"
+                                   onchange="this.form.submit()" />
+                        </form>
+                    </td>
+
+                    </td>
+                    <td class="item-total"
+                        th:text="${#numbers.formatDecimal(item.tongTien, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">
+                    </td>
+                    <td>
+                        <form th:action="@{/cart/remove/{id}(id=${item.id})}" method="post">
+                            <button class="btn btn-danger btn-sm">Xoá</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Chỉ hiển thị tổng của sản phẩm đã chọn -->
+            <h4 class="text-end text-primary">
+                Tổng tiền đã chọn: <span id="selectedTotal">0 VNĐ</span>
+            </h4>
+
+            <div class="d-flex justify-content-between mt-3">
+                <a href="/" class="btn btn-secondary">Tiếp tục mua hàng</a>
+                <button type="submit" class="btn btn-success">Mua hàng các sản phẩm đã chọn</button>
+            </div>
+        </form>
+        <!-- FORM kết thúc -->
+    </div>
+    </body>
+    </html>

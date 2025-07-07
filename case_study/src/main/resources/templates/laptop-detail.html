@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết sản phẩm - NTNLaptop</title>
+
+    <!-- Thư viện dùng chung -->
+    <th:block th:insert="~{/layout::library}" />
+
+    <!-- CSS riêng -->
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/product-detail.css}" />
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+<!-- Navbar -->
+<th:block th:replace="~{fragments/navbar :: navbar}" />
+
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <!-- Hình ảnh và ảnh phụ -->
+        <div class="col-md-6">
+            <!-- Hình ảnh chính -->
+            <div class="img-wrapper shadow mb-3">
+                <img id="mainImage"
+                     th:src="@{/images/laptop/{img}(img=${product.hinhAnhChinh})}"
+                     th:alt="${product.tenLaptop}" class="img-fluid rounded w-100">
+            </div>
+
+            <!-- Ảnh phụ -->
+            <div class="d-flex gap-2 overflow-auto mb-3">
+                <!-- Ảnh chính -->
+                <img class="img-thumbnail thumbnail-img active-thumbnail"
+                     th:src="@{/images/laptop/{img}(img=${product.hinhAnhChinh})}"
+                     th:alt="${product.tenLaptop}"
+                     th:onclick="'changeMainImage(\'' + @{/images/laptop/{img}(img=${product.hinhAnhChinh})} + '\', this)'" />
+
+                <!-- Ảnh phụ -->
+                <img class="img-thumbnail thumbnail-img"
+                     th:each="img : ${hinhAnhPhu}"
+                     th:src="@{/images/laptop/{img}(img=${img.duongDanHinh})}"
+                     th:alt="${img.altText}"
+                     th:onclick="'changeMainImage(\'' + @{/images/laptop/{img}(img=${img.duongDanHinh})} + '\', this)'" />
+            </div>
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-6">
+            <h2 th:text="${product.tenLaptop}" class="fw-bold mb-3"></h2>
+            <p><strong>Thương hiệu:</strong> <span th:text="${product.thuongHieu.tenThuongHieu}"></span></p>
+            <p><strong>CPU:</strong> <span th:text="${product.cpu}"></span></p>
+            <p><strong>RAM:</strong> <span th:text="${product.ram}"></span></p>
+            <p><strong>Ổ cứng:</strong> <span th:text="${product.oCung}"></span></p>
+            <p><strong>Màn hình:</strong> <span th:text="${product.manHinh}"></span></p>
+            <h4 class="text-danger mt-4 mb-3"
+                th:text="${#numbers.formatDecimal(product.giaBan, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}"></h4>
+
+            <div class="d-flex gap-2 mt-4">
+                <button class="btn btn-success"
+                        th:data-id="${product.idLaptop}"
+                        onclick="themVaoGio(this)">
+                    <i class="fas fa-cart-plus me-2"></i> Thêm vào giỏ
+                </button>
+
+
+                <a class="btn btn-outline-secondary" th:href="@{/laptop}">
+                    <i class="fas fa-arrow-left me-1"></i> Quay lại
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript xử lý ảnh -->
+<script>
+    function changeMainImage(newSrc, element) {
+        document.getElementById("mainImage").src = newSrc;
+
+        document.querySelectorAll('.thumbnail-img').forEach(img => {
+            img.classList.remove('active-thumbnail');
+        });
+
+        element.classList.add('active-thumbnail');
+    }
+</script>
+<script>
+    function themVaoGio(button) {
+        const productId = button.getAttribute("data-id");
+
+        fetch("/cart/api/add/" + productId)
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error("Lỗi thêm vào giỏ");
+            })
+            .then(data => {
+                alert("Đã thêm sản phẩm vào giỏ hàng!");
+
+            })
+            .catch(error => {
+                alert(" Không thể thêm sản phẩm vào giỏ hàng.");
+            });
+    }
+</script>
+
+
+</body>
+</html>

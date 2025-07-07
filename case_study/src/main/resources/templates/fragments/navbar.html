@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" th:href="@{/}">
+                <i class="fas fa-laptop me-2"></i>NTNLaptop
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}"><i class="fas fa-home me-1"></i>Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/laptop}"><i class="fas fa-laptop-code me-1"></i>Sản phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/about}"><i class="fas fa-info-circle me-1"></i>Giới thiệu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/contact}"><i class="fas fa-phone me-1"></i>Liên hệ</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" th:href="@{/cart}">
+                            <i class="fas fa-shopping-cart me-1"></i>Giỏ hàng
+                            <span id="cart-count"
+                                  class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+                                  th:text="${cartItemCount != null ? cartItemCount : 0}">0</span>
+                        </a>
+                    </li>
+
+                    <!-- Hiển thị nút "Đơn hàng" nếu đã đăng nhập -->
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/don-hang}">
+                            <i class="fas fa-box me-1"></i>Đơn hàng
+                        </a>
+                    </li>
+
+                    <!-- Nếu chưa đăng nhập -->
+                    <li class="nav-item d-flex" sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-light ms-3" th:href="@{/login}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+                        </a>
+                        <a class="btn btn-warning ms-2" th:href="@{/register}">
+                            <i class="fas fa-user-plus me-1"></i> Đăng ký
+                        </a>
+                    </li>
+
+                    <!-- Nếu đã đăng nhập -->
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="btn btn-outline-light ms-3 dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i><span sec:authentication="name"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" th:href="@{/profile}">Trang cá nhân</a></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

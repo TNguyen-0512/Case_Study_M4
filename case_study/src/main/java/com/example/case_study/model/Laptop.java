@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "laptop")
@@ -105,5 +106,8 @@ public class Laptop {
     public enum TrangThai {
         Còn_hàng, Hết_hàng, Ngừng_bán, Sắp_về
     }
+    @OneToMany(mappedBy = "laptop", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<HinhAnhLaptop> hinhAnhPhu;
+
 }
 

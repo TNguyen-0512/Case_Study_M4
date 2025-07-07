@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giới thiệu - NTNLaptop</title>
+    <link rel="stylesheet" th:href="@{/css/about.css}">
+    <!-- Nếu dùng Bootstrap, thêm link này để dùng class img-fluid và container -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-MecoD0pzBtx9sl+9UbY7pP/6+NRzOw6TfhQz86/Y8vTCX2exW5nYox3/9hr/9nI4"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-5 pt-4 about-container">
+    <h2>Giới thiệu về NTNLaptop</h2>
+    <p>Chúng tôi chuyên cung cấp laptop chính hãng với giá tốt nhất, dịch vụ hậu mãi chu đáo, và hỗ trợ kỹ thuật 24/7.</p>
+    <img th:src="@{/images/gioi_thieu1.jpg}" alt="Laptop NTNLaptop" class="img-fluid mt-3 rounded">
+</div>
+</body>
+</html>

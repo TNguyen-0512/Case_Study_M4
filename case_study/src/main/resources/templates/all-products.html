@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Tất cả sản phẩm - NTNLaptop</title>
+    <th:block th:insert="~{/layout::library}" />
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/all-products.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script th:src="@{/js/home.js}" defer></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<th:block th:replace="~{fragments/navbar :: navbar}" />
+
+<div class="container-custom mt-5 pt-5">
+    <h2 class="text-center section-title animate-on-scroll">Danh Sách sản phẩm</h2>
+
+
+    <form method="get" th:action="@{/laptop}" class="row g-3 mb-5">
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="search" placeholder="Tìm theo tên sản phẩm"
+                   th:value="${search}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="brand" placeholder="Lọc theo thương hiệu"
+                   th:value="${brand}">
+        </div>
+        <div class="col-md-4 d-grid">
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search me-1"></i> Tìm kiếm
+            </button>
+        </div>
+    </form>
+
+
+    <div class="product-grid" th:if="${products != null and !products.isEmpty()}">
+        <div class="product-card animate-on-scroll" th:each="product : ${products}">
+            <div class="product-image">
+                <img th:src="@{/images/laptop/{img}(img=${product.hinhAnhChinh})}" class="product-img"
+                     th:alt="${product.tenLaptop}" alt="Ảnh sản phẩm">
+                <div class="product-badge">MỚI</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title" th:text="${product.tenLaptop}"></h3>
+                <div class="product-brand">
+                    <i class="fas fa-award"></i>
+                    <span th:text="${product.thuongHieu.tenThuongHieu}"></span>
+                </div>
+                <div class="product-price"
+                     th:text="${#numbers.formatDecimal(product.giaBan, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}"></div>
+                <div class="product-features">
+                    <span class="feature-tag" th:text="${product.cpu}"></span>
+                    <span class="feature-tag" th:text="${product.ram}"></span>
+                    <span class="feature-tag" th:text="${product.oCung}"></span>
+                    <span class="feature-tag" th:text="${product.manHinh}"></span>
+                </div>
+                <div class="product-actions">
+                    <a class="btn btn-outline-primary btn-sm"
+                       th:href="@{'/laptop/detail/' + ${product.idLaptop}}">
+                        <i class="fas fa-eye me-1"></i> Xem chi tiết
+                    </a>
+
+                    <button class="btn-primary-custom add-to-cart-btn" th:data-id="${product.idLaptop}">
+                        <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="text-center mt-5 text-danger fs-5" th:if="${products == null or products.isEmpty()}">
+        Không tìm thấy sản phẩm phù hợp.
+    </div>
+
+
+    <nav th:if="${totalPages > 1}" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i} == ${currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/laptop(page=${i}, search=${search}, brand=${brand})}"
+                   th:text="${i + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>
