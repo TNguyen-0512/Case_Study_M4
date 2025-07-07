@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form khách hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 th:text="${khachHang.idKhachHang == null ? 'Thêm mới khách hàng' : 'Chỉnh sửa khách hàng'}"></h1>
+
+    <form th:action="@{/admin/khach-hang/save}" th:object="${khachHang}" method="post">
+        <input type="hidden" th:field="*{idKhachHang}"/>
+
+        <div class="mb-3">
+            <label>Họ tên</label>
+            <input type="text" class="form-control" th:field="*{hoTen}" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" th:field="*{email}" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Số điện thoại</label>
+            <input type="text" class="form-control" th:field="*{soDienThoai}">
+        </div>
+
+        <div class="mb-3">
+            <label>Địa chỉ</label>
+            <textarea class="form-control" th:field="*{diaChi}"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label>Ngày sinh</label>
+            <input type="date" class="form-control" th:field="*{ngaySinh}">
+        </div>
+
+        <div class="mb-3">
+            <label>Giới tính</label>
+            <select class="form-control" th:field="*{gioiTinh}" required>
+                <option value="">-- Chọn giới tính --</option>
+                <option th:value="Nam" th:selected="${khachHang.gioiTinh == 'Nam'}">Nam</option>
+                <option th:value="Nữ" th:selected="${khachHang.gioiTinh == 'Nữ'}">Nữ</option>
+                <option th:value="Khác" th:selected="${khachHang.gioiTinh == 'Khác'}">Khác</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Lưu</button>
+        <a th:href="@{/admin/khach-hang/view}" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
+</body>
+</html>

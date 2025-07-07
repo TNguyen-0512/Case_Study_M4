@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Báo cáo hiệu suất hệ thống</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <a href="http://localhost:8080/admin/dashboard" class="btn btn-outline-secondary mb-3">
+        <i class="fas fa-arrow-left me-1"></i> Quay lại Dashboard
+    </a>
+    <h1>Báo cáo hiệu suất hệ thống</h1>
+
+    <table class="table table-bordered">
+        <thead class="table-light">
+        <tr>
+            <th>Tham số</th>
+            <th>Giá trị</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Thời gian server hiện tại</td>
+            <td th:text="${serverTime}"></td>
+        </tr>
+        <tr>
+            <td>Số lượng đơn hàng</td>
+            <td th:text="${tongDonHang}"></td>
+        </tr>
+        <tr>
+            <td>Số lượng khách hàng</td>
+            <td th:text="${tongKhachHang}"></td>
+        </tr>
+        <tr>
+            <td>Số lượng nhân viên</td>
+            <td th:text="${tongNhanVien}"></td>
+        </tr>
+        <tr>
+            <td>Uptime hệ thống</td>
+            <td th:text="${uptime}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p class="text-muted">Dữ liệu được cập nhật vào: <span th:text="${serverTime}"></span></p>
+</div>
+</body>
+</html>

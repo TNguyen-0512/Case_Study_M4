@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm / Sửa Laptop</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h1 th:text="${laptop.idLaptop == null ? 'Thêm mới Laptop' : 'Cập nhật Laptop'}"></h1>
+
+  <!-- Thêm th:object="*{laptop}" vào form -->
+  <form th:object="${laptop}" th:action="${laptop.idLaptop == null} ? @{/admin/laptop/create} : @{'/admin/laptop/update/' + ${laptop.idLaptop}}" method="post">
+    <div class="mb-3">
+      <label class="form-label">Tên Laptop</label>
+      <input type="text" class="form-control" th:field="*{tenLaptop}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Model</label>
+      <input type="text" class="form-control" th:field="*{model}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Giá bán</label>
+      <input type="number" class="form-control" th:field="*{giaBan}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Số lượng tồn</label>
+      <input type="number" class="form-control" th:field="*{soLuongTon}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Trạng thái</label>
+      <input type="text" class="form-control" th:field="*{trangThai}" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a th:href="@{/admin/laptop/view}" class="btn btn-secondary">Quay lại</a>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Vai trò</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <a href="http://localhost:8080/admin/dashboard" class="btn btn-outline-secondary mb-3">
+        <i class="fas fa-arrow-left me-1"></i> Quay lại Dashboard
+    </a>
+    <h1>Danh sách Vai trò</h1>
+    <a th:href="@{/admin/vai-tro/create}" class="btn btn-primary mb-3">Thêm mới Vai trò</a>
+    <table class="table table-bordered table-striped table-dark">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Vai Trò</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vaiTro : ${vaiTros}">
+            <td th:text="${vaiTro.idVaiTro}"></td>
+            <td th:text="${vaiTro.tenVaiTro}"></td>
+            <td>
+                <a th:href="@{'/admin/vai-tro/update/' + ${vaiTro.idVaiTro}}" class="btn btn-sm btn-warning">Sửa</a>
+                <a th:href="@{'/admin/vai-tro/delete/' + ${vaiTro.idVaiTro}}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Bạn có chắc chắn muốn xoá vai trò này?')">Xoá</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
