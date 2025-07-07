@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.tenLaptop} + ' - Chi tiết sản phẩm'">Chi tiết sản phẩm</title>
+    <th:block th:insert="~{/layout::library}"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{/layout::navbar}"/>
+
+<div class="container-custom detail-container mt-4">
+    <div class="detail-grid">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="detail-image-box">
+            <img th:src="@{/images/laptop/{img}(img=${product.hinhAnhChinh})}"
+                 th:alt="${product.tenLaptop}" class="detail-main-img">
+        </div>
+
+        <!-- Thông tin chi tiết -->
+        <div class="detail-info-box">
+            <h2 class="detail-title" th:text="${product.tenLaptop}">Tên sản phẩm</h2>
+            <div class="detail-brand">
+                <i class="fas fa-award"></i>
+                <span th:text="${product.thuongHieu.tenThuongHieu}">Thương hiệu</span>
+            </div>
+            <div class="detail-price text-danger fw-bold fs-4 mb-3"
+                 th:text="${#numbers.formatDecimal(product.giaBan, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                0 VNĐ
+            </div>
+            <div class="detail-description mb-3" th:text="${product.moTaNgan}">
+                Mô tả ngắn
+            </div>
+
+            <!-- Thông số kỹ thuật -->
+            <table class="table table-striped detail-specs">
+                <tbody>
+                <tr><th>CPU</th><td th:text="${product.cpu}"></td></tr>
+                <tr><th>RAM</th><td th:text="${product.ram}"></td></tr>
+                <tr><th>Ổ cứng</th><td th:text="${product.oCung}"></td></tr>
+                <tr><th>Card đồ họa</th><td th:text="${product.cardDoHoa}"></td></tr>
+                <tr><th>Màn hình</th><td th:text="${product.manHinh}"></td></tr>
+                <tr><th>Pin</th><td th:text="${product.pin}"></td></tr>
+                <tr><th>Trọng lượng</th><td th:text="${product.trongLuong}"></td></tr>
+                <tr><th>Hệ điều hành</th><td th:text="${product.heDieuHanh}"></td></tr>
+                <tr><th>Màu sắc</th><td th:text="${product.mauSac}"></td></tr>
+                <tr><th>Trạng thái</th><td th:text="${product.trangThai}"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="mt-3 d-flex gap-3">
+                <a th:href="@{/cart/buy-now/{id}(id=${product.idLaptop})}" class="btn btn-danger">
+                    <i class="fas fa-bolt me-2"></i> Mua ngay
+                </a>
+                <a th:href="@{/cart/add/{id}(id=${product.idLaptop})}" class="btn-primary-custom">
+                    <i class="fas fa-cart-plus me-2"></i> Thêm vào giỏ
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{/layout::footer}"/>
+</body>
+</html>
