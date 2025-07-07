@@ -15,6 +15,7 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    padding-top: 80px;
 }
 
 .hero-section {
@@ -287,6 +288,28 @@ body {
     line-height: 1.6;
 }
 
+.footer-section {
+    background-color: #f1f5f9;
+    color: #1f2937;
+    padding: 60px 30px;
+    font-size: 0.95rem;
+    margin-top: 80px;
+}
+
+.footer-section h5 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.footer-section a {
+    color: #1e40af;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -327,3 +350,202 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* Navbar tùy chỉnh */
+.navbar {
+    background-color: var(--text-dark);
+    padding: 15px 0;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s ease;
+}
+
+.navbar .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin-left: 15px;
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: var(--accent-color);
+}
+
+.navbar .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.navbar .btn-outline-light:hover {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.navbar .dropdown-menu {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.navbar .dropdown-item {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: var(--bg-light);
+    color: var(--primary-color);
+}
+
+.navbar .badge {
+    font-size: 0.7rem;
+    padding: 5px 7px;
+}
+.nav-menu li a.active {
+    color: orange !important;
+    font-weight: bold;
+}
+.cart-count {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    position: relative;
+    top: -10px;
+    left: -4px;
+}
+.detail-container {
+    padding: 2rem 0;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.detail-image-box img {
+    width: 80%;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.detail-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.detail-brand {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.detail-price {
+    color: #e74c3c;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.detail-specs th {
+    width: 150px;
+}
+
+.btn-primary-custom {
+    background-color: #1a73e8;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-primary-custom:hover {
+    background-color: #125ab3;
+}
+filter-form {
+    background-color: #f8f9fa;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
+}
+
+.filter-form .form-control,
+.filter-form .form-select {
+    border-radius: 8px;
+    min-width: 150px;
+}
+
+.filter-form .btn {
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+.filter-form .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+    .filter-form .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+.brand-tabs {
+    display: flex;
+    justify-content: center;
+    border-bottom: 4px solid #e74c3c;
+    background-color: #f8f8f8;
+    padding: 10px 0;
+}
+
+.brand-tab {
+    text-align: center;
+    padding: 10px 20px;
+    color: #222;
+    text-decoration: none;
+    border-radius: 5px 5px 0 0;
+    margin: 0 5px;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.brand-tab:hover {
+    background-color: #f1f1f1;
+}
+
+.brand-tab.active {
+    background-color: #e74c3c;
+    color: white;
+    font-weight: bold;
+}
+
+.brand-name {
+    font-size: 16px;
+}
+
+.brand-discount {
+    font-size: 13px;
+    color: #fefefe;
+}
+.brand-tab:not(.active) .brand-discount {
+    color: #444;
+}
+

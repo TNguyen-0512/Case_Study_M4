@@ -11,72 +11,8 @@
     <script th:src="@{/js/home.js}" defer></script>
 </head>
 <body>
-
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
-    <div class="container">
-        <a class="navbar-brand fw-bold fs-4" th:href="@{/}">
-            <i class="fas fa-laptop me-2"></i>NTNLaptop
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-lg-center">
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/}">
-                        <i class="fas fa-home me-1"></i>Trang chủ
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/laptop}">
-                        <i class="fas fa-laptop-code me-1"></i>Sản phẩm
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/about}">
-                        <i class="fas fa-info-circle me-1"></i>Giới thiệu
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/contact}">
-                        <i class="fas fa-phone me-1"></i>Liên hệ
-                    </a>
-                </li>
-                <li class="nav-item position-relative">
-                    <a class="nav-link" th:href="@{/cart}">
-                        <i class="fas fa-shopping-cart me-1"></i>Giỏ hàng
-                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle"
-                              th:text="${cartItemCount != null ? cartItemCount : 0}">0</span>
-                    </a>
-                </li>
-                <!-- Nếu chưa đăng nhập -->
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="btn btn-outline-light ms-3" th:href="@{/login}">
-                        <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
-                    </a>
-                </li>
-
-                <!-- Nếu đã đăng nhập -->
-                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                    <a class="btn btn-outline-light ms-3 dropdown-toggle" href="#" id="userDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user me-1"></i>
-                        <span sec:authentication="name">User</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" th:href="@{/profile}">Trang cá nhân</a></li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
+<th:block th:replace="~{/layout::navbar}"/>
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="container-custom">
@@ -110,40 +46,87 @@
     <p class="section-subtitle animate-on-scroll">
         Khám phá những chiếc laptop được yêu thích nhất với hiệu năng vượt trội
     </p>
+    <form method="get" action="#" class="filter-form">
+        <div class="filter-row">
+            <!-- Tên laptop -->
+            <input type="text" name="tenLaptop" placeholder="Tìm kiếm theo tên"
+                   class="form-control"
+                   th:value="${tenLaptop}">
+            <!-- Giá -->
+            <input type="number" name="giaMin" placeholder="Giá từ"
+                   class="form-control" th:value="${giaMin}">
+            <input type="number" name="giaMax" placeholder="Đến"
+                   class="form-control" th:value="${giaMax}">
 
-    <div class="product-grid" th:if="${products}">
-        <div class="product-card animate-on-scroll" th:each="product : ${products}">
-            <div class="product-image">
-                <img th:src="@{/images/laptop/{img}(img=${product.hinhAnhChinh})}"
-                     class="product-img"
-                     th:alt="${product.tenLaptop}" alt="Ảnh sản phẩm">
-                <div class="product-badge">HOT</div>
-            </div>
-            <div class="product-info">
-                <h3 class="product-title" th:text="${product.tenLaptop}"></h3>
-                <div class="product-brand">
-                    <i class="fas fa-award"></i>
-                    <span th:text="${product.thuongHieu.tenThuongHieu}"></span>
-                </div>
-                <div class="product-price"
-                     th:text="${#numbers.formatDecimal(product.giaBan, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">
-                </div>
-                <div class="product-features">
-                    <span class="feature-tag" th:text="${product.cpu}"></span>
-                    <span class="feature-tag" th:text="${product.ram}"></span>
-                    <span class="feature-tag" th:text="${product.oCung}"></span>
-                    <span class="feature-tag" th:text="${product.manHinh}"></span>
-                </div>
-                <div class="product-actions">
-                    <a th:href="@{/laptop/detail/{id}(id=${product.idLaptop})}"
-                       class="btn-primary-custom">
-                        <i class="fas fa-cart-plus me-2"></i>
-                        Thêm vào giỏ
-                    </a>
-                </div>
-            </div>
+            <!-- CPU -->
+            <input type="text" name="cpu" placeholder="CPU"
+                   class="form-control" th:value="${cpu}">
+
+            <!-- RAM -->
+            <input type="text" name="ram" placeholder="RAM"
+                   class="form-control" th:value="${ram}">
+
+            <!-- Ổ cứng -->
+            <input type="text" name="oCung" placeholder="Ổ cứng"
+                   class="form-control" th:value="${oCung}">
+
+            <!-- Nút lọc -->
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter me-1"></i> Lọc
+            </button>
         </div>
+    </form>
+    <div class="brand-tabs">
+        <!-- Tab "Tất cả" -->
+        <a th:href="@{/product(tenLaptop=${tenLaptop},
+                          giaMin=${giaMin},
+                          giaMax=${giaMax},
+                          cpu=${cpu},
+                          ram=${ram},
+                          oCung=${oCung})}"
+           th:class="'brand-tab' + (${thuongHieuId} == null ? ' active' : '')">
+            <div class="brand-name">Tất cả</div>
+            <div class="brand-discount">Xem tất cả</div>
+        </a>
+
+        <!-- Tabs thương hiệu -->
+        <a th:each="brand : ${thuongHieus}"
+           th:href="@{/product(thuongHieuId=${brand.idThuongHieu},
+                          tenLaptop=${tenLaptop},
+                          giaMin=${giaMin},
+                          giaMax=${giaMax},
+                          cpu=${cpu},
+                          ram=${ram},
+                          oCung=${oCung})}"
+           th:class="'brand-tab' + (${brand.idThuongHieu} == ${thuongHieuId} ? ' active' : '')">
+            <div class="brand-name" th:text="${brand.tenThuongHieu}"></div>
+        </a>
     </div>
+
+    <div id="product-container" th:replace="fragments/product-list :: productList"></div>
+
+    <!-- Pagination -->
+    <div class="pagination d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            <!-- Nút Previous -->
+            <li class="page-item" th:classappend="${products.first} ? 'disabled'">
+                <a class="page-link" th:href="@{/ (page=${products.number - 1})}">&laquo;</a>
+            </li>
+
+            <!-- Các số trang -->
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
+                th:classappend="${i == products.number} ? 'active'">
+                <a class="page-link" th:href="@{/ (page=${i})}" th:text="${i + 1}"></a>
+            </li>
+
+            <!-- Nút Next -->
+            <li class="page-item" th:classappend="${products.last} ? 'disabled'">
+                <a class="page-link" th:href="@{/ (page=${products.number + 1})}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+
 
     <!-- Features Section -->
     <section class="features-section">
@@ -179,6 +162,10 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer Section -->
+    <th:block th:replace="~{/layout::footer}"/>
 </div>
+
 </body>
 </html>

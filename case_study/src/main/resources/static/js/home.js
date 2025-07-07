@@ -18,4 +18,16 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(el);
     });
 });
+document.querySelector(".filter-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const params = new URLSearchParams(new FormData(form)).toString();
+
+    fetch(`/product/filter?${params}`)
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById("product-container").innerHTML = html;
+        });
+});
+
 

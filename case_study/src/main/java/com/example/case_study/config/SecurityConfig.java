@@ -15,7 +15,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/product/**", "/webjars/**"
+                                "/", "/login", "/register",
+                                "/css/**", "/js/**", "/images/**", "/webjars/**",
+                                "/product/**", "/product/detail/**", "/error"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -32,4 +34,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

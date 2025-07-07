@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class LaptopService implements ILaptopService {
 
@@ -53,4 +55,33 @@ public class LaptopService implements ILaptopService {
         return laptopRepository.findByTenLaptopContainingIgnoreCaseAndThuongHieu_TenThuongHieuContainingIgnoreCase(
                 tenLaptop, tenThuongHieu, pageable);
     }
+
+    @Override
+    public Page<Laptop> filterLaptops(String tenLaptop,
+                                      Integer thuongHieuId,
+                                      BigDecimal giaMin,
+                                      BigDecimal giaMax,
+                                      String cpu,
+                                      String ram,
+                                      String oCung,
+                                      Pageable pageable) {
+
+        // Nếu rỗng thì truyền null, nếu có thì thêm dấu %
+        String tenLaptopLike = (tenLaptop == null || tenLaptop.isBlank()) ? null : "%" + tenLaptop.trim().toLowerCase() + "%";
+        String cpuLike = (cpu == null || cpu.isBlank()) ? null : "%" + cpu.trim() + "%";
+        String ramLike = (ram == null || ram.isBlank()) ? null : "%" + ram.trim() + "%";
+        String oCungLike = (oCung == null || oCung.isBlank()) ? null : "%" + oCung.trim() + "%";
+
+        return laptopRepository.filterLaptops(
+                tenLaptopLike,
+                thuongHieuId,
+                giaMin,
+                giaMax,
+                cpuLike,
+                ramLike,
+                oCungLike,
+                pageable
+        );
+    }
+
 }

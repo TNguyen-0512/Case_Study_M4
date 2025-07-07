@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,6 +9,138 @@
     </th:block>
 </head>
 <body>
+<th:block th:fragment="navbar">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" th:href="@{/}">
+                <i class="fas fa-laptop me-2"></i>NTNLaptop
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">
+                            <i class="fas fa-home me-1"></i>Trang chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">
+                            <i class="fas fa-laptop-code me-1"></i>Sản phẩm
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/about}">
+                            <i class="fas  me-1"></i>Darboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/contact}">
+                            <i class="fas fa-phone me-1"></i>Liên hệ
+                        </a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" th:href="@{/cart}">
+                            <i class="fas fa-shopping-cart me-1"></i>Giỏ hàng
+                            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+                                  th:text="${cartItemCount != null ? cartItemCount : 0}">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-light ms-3" th:href="@{/login}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="btn btn-outline-light ms-3 dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>
+                            <span sec:authentication="name">User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" th:href="@{/profile}">Trang cá nhân</a></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+<th:block th:fragment="footer">
+    <footer class="footer-section bg-light mt-5 pt-4 pb-3">
+        <div class="container-custom">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5>Hỗ trợ Khách hàng</h5>
+                    <ul class="list-unstyled">
+                        <li>Thẻ ưu đãi</li>
+                        <li>Hướng dẫn mua online</li>
+                        <li>Ưu đãi doanh nghiệp</li>
+                        <li>Chính sách trả góp</li>
+                        <li>Dịch vụ sửa chữa</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Chính sách mua hàng</h5>
+                    <ul class="list-unstyled">
+                        <li>Điều kiện giao dịch</li>
+                        <li>Chính sách bảo hành</li>
+                        <li>Chính sách đổi trả</li>
+                        <li>Chính sách thanh toán</li>
+                        <li>Giao hàng & Lắp đặt</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Thông tin NTNLaptop</h5>
+                    <ul class="list-unstyled">
+                        <li>Giới thiệu</li>
+                        <li>Hệ thống cửa hàng</li>
+                        <li>Chính sách bảo mật</li>
+                        <li>Tin công nghệ</li>
+                        <li>Tuyển dụng</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Email liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li>Hỗ trợ: <a href="mailto:hotro@ntnlaptop.vn">hotro@ntnlaptop.vn</a></li>
+                        <li>Báo giá: <a href="mailto:baogia@ntnlaptop.vn">baogia@ntnlaptop.vn</a></li>
+                        <li>Hợp tác: <a href="mailto:hoptac@ntnlaptop.vn">hoptac@ntnlaptop.vn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h6>Phương thức thanh toán</h6>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <i class="fas fa-qrcode"></i> QR Code
+                        <i class="fas fa-money-bill"></i> Tiền mặt
+                        <i class="fas fa-credit-card"></i> Trả góp
+                        <i class="fas fa-university"></i> Internet Banking
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h6>Ngân hàng hỗ trợ</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <img src="/images/bank/vnp_bank.png" alt="VCB" width="530">
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4"/>
+
+            <div class="text-center small text-muted">
+                © 2025 NTNLaptop. Website được phát triển bởi Nhóm NTNLaptop. Địa chỉ: Ở đâu tự kiếm, TP.Đà Nẵng.<br/>
+            </div>
+        </div>
+    </footer>
+</th:block>
 </body>
 </html>
