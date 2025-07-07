@@ -28,7 +28,7 @@
     <tr th:each="phieu : ${phieuNhapKhos}">
       <td th:text="${phieu.maPhieuNhap}"></td>
       <td th:text="${phieu.nhaCungCap}"></td>
-      <td th:text="${phieu.tongTien} + ' ₫'"></td>
+      <td th:text="|${#numbers.formatDecimal(phieu.tongTien, 0, 'COMMA', 0, 'POINT')} VND|"></td>
       <td th:text="${#temporals.format(phieu.ngayNhap, 'dd/MM/yyyy HH:mm')}"></td>
       <td>
         <a th:href="@{'/admin/nhap-kho/chi-tiet/' + ${phieu.idPhieuNhap}}" class="btn btn-sm btn-info">Chi tiết</a>
