@@ -7,35 +7,57 @@
 </head>
 <body>
 <div class="container mt-4">
-    <a href="http://localhost:8080/admin/dashboard" class="btn btn-outline-secondary mb-3">
-        <i class="fas fa-arrow-left me-1"></i> Quay lại Dashboard
-    </a>
     <h1>Danh sách Đơn hàng</h1>
-    <table class="table table-bordered table-striped table-dark">
-        <thead>
+
+    <div class="mb-3">
+        <a href="#" class="btn btn-primary">Thêm mới</a>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
         <tr>
-            <th>Mã Đơn</th>
-            <th>Khách Hàng</th>
+            <th>ID</th>
+            <th>Mã đơn hàng</th>
+            <th>Khách hàng</th>
+            <th>Ngày đặt</th>
             <th>Tổng tiền</th>
             <th>Trạng thái</th>
-            <th>Ngày đặt</th>
             <th>Hành động</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="dh : ${donHangs}">
+            <td th:text="${dh.idDonHang}"></td>
             <td th:text="${dh.maDonHang}"></td>
-            <td th:text="${dh.khachHang.hoTen}"></td>
-            <!-- Hiển thị số đơn giản -->
-            <td th:text="${dh.tongThanhToan} + ' ₫'"></td>
-            <td th:text="${dh.trangThaiDonHang}"></td>
-            <td th:text="${#temporals.format(dh.ngayDatHang.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${dh.khachHang != null ? dh.khachHang.hoTen : 'Chưa có thông tin'}"></td>
             <td>
-                <a th:href="@{'/admin/don-hang/chi-tiet/' + ${dh.idDonHang}}" class="btn btn-sm btn-info">Chi tiết</a>
+                <span th:if="${dh.ngayDatHang != null}"
+                      th:text="${#temporals.format(dh.ngayDatHang.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></span>
+                <span th:unless="${dh.ngayDatHang != null}" class="text-muted">Chưa có ngày</span>
+            </td>
+            <td th:text="${#numbers.formatCurrency(dh.tongThanhToan)}"></td>
+            <td>
+                <span th:class="${dh.trangThaiDonHang == 'Da_giao' ? 'badge bg-success' :
+                                dh.trangThaiDonHang == 'Cho_xac_nhan' ? 'badge bg-warning' :
+                                dh.trangThaiDonHang == 'Da_huy' ? 'badge bg-danger' : 'badge bg-info'}"
+                      th:text="${dh.trangThaiDonHang}"></span>
+            </td>
+            <td>
+                <a th:href="@{/admin/don-hang/chi-tiet/{id}(id=${dh.idDonHang})}"
+                   class="btn btn-info btn-sm">Chi tiết</a>
+                <a th:href="@{/admin/don-hang/delete/{id}(id=${dh.idDonHang})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?')">Xóa</a>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <div th:if="${donHangs.size() == 0}" class="alert alert-info text-center">
+        Chưa có đơn hàng nào
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

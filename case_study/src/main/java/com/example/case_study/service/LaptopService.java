@@ -1,9 +1,10 @@
 package com.example.case_study.service;
 
 import com.example.case_study.model.Laptop;
-import com.example.case_study.repository.LaptopRepository;
-import com.example.case_study.service.ILaptopService;
+import com.example.case_study.repository.ILaptopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,27 +12,42 @@ import java.util.Optional;
 
 @Service
 public class LaptopService implements ILaptopService {
-
     @Autowired
-    private LaptopRepository laptopRepository;
+    private ILaptopRepository laptopRepository;
+
 
     @Override
-    public List<Laptop> findAll() {
-        return laptopRepository.findAll();
+    public Page<Laptop> findAll(Pageable pageable) {
+        return  laptopRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Laptop> findById(Integer id) {
-        return laptopRepository.findById(id);
+    public Laptop findById(Long id) {
+        return laptopRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Laptop save(Laptop laptop) {
-        return laptopRepository.save(laptop);
+    public void save(Laptop laptop) {
+        laptopRepository.save(laptop);
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void delete(Long id) {
         laptopRepository.deleteById(id);
+    }
+
+    @Override
+    public long countAll() {
+        return laptopRepository.count();
+    }
+
+    @Override
+    public Page<Laptop> findByTenLaptopContainingIgnoreCase(String tenLaptop, Pageable pageable) {
+        return laptopRepository.findByTenLaptopContainingIgnoreCase(tenLaptop, pageable);
+    }
+
+    @Override
+    public Page<Laptop> filterByTenLaptopAndThuongHieu(String tenLaptop, Integer thuongHieuId, Pageable pageable) {
+        return laptopRepository.filterByTenLaptopAndThuongHieu(tenLaptop, thuongHieuId, pageable);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.case_study.service;
 
 import com.example.case_study.model.ThuongHieu;
-import com.example.case_study.repository.ThuongHieuRepository;
+import com.example.case_study.repository.IThuongHieuRepository;
 import com.example.case_study.service.IThuongHieuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ThuongHieuService implements IThuongHieuService {
 
     @Autowired
-    private ThuongHieuRepository thuongHieuRepository;
+    private IThuongHieuRepository thuongHieuRepository;
 
     @Override
     public List<ThuongHieu> findAll() {

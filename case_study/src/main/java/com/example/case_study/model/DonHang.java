@@ -55,6 +55,20 @@ public class DonHang {
     @OneToMany(mappedBy = "donHang", cascade = CascadeType.ALL)
     private List<ChiTietDonHang> chiTietDonHangList;
 
+    // Thêm method này để tự động set ngày tạo
+    @PrePersist
+    public void prePersist() {
+        if (ngayDatHang == null) {
+            ngayDatHang = new Timestamp(System.currentTimeMillis());
+        }
+        if (trangThaiDonHang == null) {
+            trangThaiDonHang = TrangThaiDonHang.Cho_xac_nhan;
+        }
+        if (trangThaiThanhToan == null) {
+            trangThaiThanhToan = TrangThaiThanhToan.Chua_thanh_toan;
+        }
+    }
+
     public enum TrangThaiDonHang {
         Cho_xac_nhan, Da_xac_nhan, Dang_chuan_bi, Dang_giao, Da_giao, Da_huy, Tra_hang
     }
@@ -67,4 +81,3 @@ public class DonHang {
         Chua_thanh_toan, Da_thanh_toan, Thanh_toan_mot_phan, Hoan_tien
     }
 }
-
