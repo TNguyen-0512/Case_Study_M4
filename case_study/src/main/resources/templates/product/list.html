@@ -11,8 +11,9 @@
     <script th:src="@{/js/home.js}" defer></script>
 </head>
 <body>
-<!-- Navigation -->
+<!-- Navbar -->
 <th:block th:replace="~{/layout::navbar}"/>
+
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="container-custom">
@@ -46,63 +47,35 @@
     <p class="section-subtitle animate-on-scroll">
         Khám phá những chiếc laptop được yêu thích nhất với hiệu năng vượt trội
     </p>
-    <form method="get" action="#" class="filter-form">
-        <div class="filter-row">
-            <!-- Tên laptop -->
+
+    <!-- Form tìm kiếm -->
+    <form method="get" th:action="@{/product}" class="filter-form mb-3">
+        <div class="filter-row d-flex align-items-center gap-2">
             <input type="text" name="tenLaptop" placeholder="Tìm kiếm theo tên"
-                   class="form-control"
-                   th:value="${tenLaptop}">
-            <!-- Giá -->
-            <input type="number" name="giaMin" placeholder="Giá từ"
-                   class="form-control" th:value="${giaMin}">
-            <input type="number" name="giaMax" placeholder="Đến"
-                   class="form-control" th:value="${giaMax}">
-
-            <!-- CPU -->
-            <input type="text" name="cpu" placeholder="CPU"
-                   class="form-control" th:value="${cpu}">
-
-            <!-- RAM -->
-            <input type="text" name="ram" placeholder="RAM"
-                   class="form-control" th:value="${ram}">
-
-            <!-- Ổ cứng -->
-            <input type="text" name="oCung" placeholder="Ổ cứng"
-                   class="form-control" th:value="${oCung}">
-
-            <!-- Nút lọc -->
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-filter me-1"></i> Lọc
+                   class="form-control w-auto"
+                   th:value="${tenLaptop}" style="min-width: 250px;">
+            <button type="submit" class="btn btn-success" name="action" value="search">
+                <i class="fas fa-search me-1"></i> Tìm kiếm
             </button>
         </div>
     </form>
+
+    <!-- Tabs thương hiệu -->
     <div class="brand-tabs">
-        <!-- Tab "Tất cả" -->
-        <a th:href="@{/product(tenLaptop=${tenLaptop},
-                          giaMin=${giaMin},
-                          giaMax=${giaMax},
-                          cpu=${cpu},
-                          ram=${ram},
-                          oCung=${oCung})}"
+        <a th:href="@{/product(tenLaptop=${tenLaptop})}"
            th:class="'brand-tab' + (${thuongHieuId} == null ? ' active' : '')">
             <div class="brand-name">Tất cả</div>
             <div class="brand-discount">Xem tất cả</div>
         </a>
 
-        <!-- Tabs thương hiệu -->
         <a th:each="brand : ${thuongHieus}"
-           th:href="@{/product(thuongHieuId=${brand.idThuongHieu},
-                          tenLaptop=${tenLaptop},
-                          giaMin=${giaMin},
-                          giaMax=${giaMax},
-                          cpu=${cpu},
-                          ram=${ram},
-                          oCung=${oCung})}"
+           th:href="@{/product(thuongHieuId=${brand.idThuongHieu}, tenLaptop=${tenLaptop})}"
            th:class="'brand-tab' + (${brand.idThuongHieu} == ${thuongHieuId} ? ' active' : '')">
             <div class="brand-name" th:text="${brand.tenThuongHieu}"></div>
         </a>
     </div>
 
+    <!-- Danh sách sản phẩm -->
     <div id="product-container" th:replace="fragments/product-list :: productList"></div>
 
     <!-- Pagination -->
@@ -110,62 +83,33 @@
         <ul class="pagination">
             <!-- Nút Previous -->
             <li class="page-item" th:classappend="${products.first} ? 'disabled'">
-                <a class="page-link" th:href="@{/ (page=${products.number - 1})}">&laquo;</a>
+                <a class="page-link"
+                   th:href="@{/product(page=${products.number - 1}, tenLaptop=${tenLaptop}, thuongHieuId=${thuongHieuId})}">
+                    &laquo;
+                </a>
             </li>
 
             <!-- Các số trang -->
             <li class="page-item"
                 th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
                 th:classappend="${i == products.number} ? 'active'">
-                <a class="page-link" th:href="@{/ (page=${i})}" th:text="${i + 1}"></a>
+                <a class="page-link"
+                   th:href="@{/product(page=${i}, tenLaptop=${tenLaptop}, thuongHieuId=${thuongHieuId})}"
+                   th:text="${i + 1}"></a>
             </li>
 
             <!-- Nút Next -->
             <li class="page-item" th:classappend="${products.last} ? 'disabled'">
-                <a class="page-link" th:href="@{/ (page=${products.number + 1})}">&raquo;</a>
+                <a class="page-link"
+                   th:href="@{/product(page=${products.number + 1}, tenLaptop=${tenLaptop}, thuongHieuId=${thuongHieuId})}">
+                    &raquo;
+                </a>
             </li>
         </ul>
     </div>
-
-
-    <!-- Features Section -->
-    <section class="features-section">
-        <h2 class="section-title">Tại sao chọn NTNLaptop?</h2>
-        <div class="features-grid">
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="fas fa-shipping-fast"></i>
-                </div>
-                <h3 class="feature-title">Giao hàng nhanh</h3>
-                <p class="feature-desc">Giao hàng miễn phí toàn quốc trong 24h với đơn hàng trên 10 triệu</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="feature-title">Bảo hành chính hãng</h3>
-                <p class="feature-desc">Bảo hành toàn diện từ 12-36 tháng cùng dịch vụ hỗ trợ 24/7</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="fas fa-medal"></i>
-                </div>
-                <h3 class="feature-title">Chất lượng đảm bảo</h3>
-                <p class="feature-desc">100% hàng chính hãng, được kiểm tra kỹ càng trước khi giao</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h3 class="feature-title">Hỗ trợ tận tâm</h3>
-                <p class="feature-desc">Đội ngũ tư vấn chuyên nghiệp, hỗ trợ khách hàng 24/7</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer Section -->
-    <th:block th:replace="~{/layout::footer}"/>
 </div>
 
+<!-- Footer -->
+<th:block th:replace="~{/layout::footer}"/>
 </body>
 </html>

@@ -12,9 +12,8 @@ public interface ILaptopService {
      void save(Laptop laptop);
      void delete(Long id);
      long countAll();
-     Page<Laptop> findByTenLaptopContaining(String tenLaptop, Pageable pageable);
-     Page<Laptop> findByThuongHieuTenContaining(String tenThuongHieu, Pageable pageable);
-     Page<Laptop> findByTenLaptopAndThuongHieu(String tenLaptop, String tenThuongHieu, Pageable pageable);
-    Page<Laptop> filterLaptops(String tenLaptop,Integer thuongHieuId, BigDecimal giaMin, BigDecimal giaMax, String cpu, String ram, String oCung, Pageable pageable);
+     Page<Laptop> findByTenLaptopContainingIgnoreCase(String tenLaptop, Pageable pageable);
+
+     Page<Laptop> filterByTenLaptopAndThuongHieu(String tenLaptop, Integer thuongHieuId, Pageable pageable);
 }
 
