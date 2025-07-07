@@ -2,122 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Thêm / Sửa Danh mục</title>
+  <title>Danh mục - Form</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 <div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">
-          <h2>
-            <i class="fas fa-tags"></i>
-            <span th:text="${danhMuc.idDanhMuc == null ? 'Thêm mới Danh mục' : 'Cập nhật Danh mục'}"></span>
-          </h2>
-        </div>
-        <div class="card-body">
-          <form th:object="${danhMuc}"
-                th:action="${danhMuc.idDanhMuc == null} ? @{/admin/danh-muc/create} : @{'/admin/danh-muc/update/' + ${danhMuc.idDanhMuc}}"
-                method="post">
+  <h1 th:text="${danhMuc.idDanhMuc != null ? 'Cập nhật Danh mục' : 'Thêm mới Danh mục'}"></h1>
+  <form th:action="@{${danhMuc.idDanhMuc} != null ? '/admin/danh-muc/update/' + ${danhMuc.idDanhMuc} : '/admin/danh-muc/save'}"
+        th:object="${danhMuc}" method="post">
 
-            <div class="row">
-              <div class="col-md-8">
-                <div class="mb-3">
-                  <label class="form-label">
-                    <i class="fas fa-tag"></i> Tên danh mục <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" class="form-control" th:field="*{tenDanhMuc}"
-                         required maxlength="100"
-                         placeholder="Nhập tên danh mục">
-                  <div class="form-text">Tối đa 100 ký tự</div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">
-                    <i class="fas fa-sort-numeric-up"></i> Thứ tự hiển thị
-                  </label>
-                  <input type="number" class="form-control" th:field="*{thuTuHienThi}"
-                         min="0" value="0"
-                         placeholder="0">
-                  <div class="form-text">Số thứ tự hiển thị trên trang</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">
-                <i class="fas fa-align-left"></i> Mô tả
-              </label>
-              <textarea class="form-control" th:field="*{moTa}"
-                        rows="4" placeholder="Nhập mô tả chi tiết về danh mục..."></textarea>
-              <div class="form-text">Mô tả chi tiết về danh mục sản phẩm</div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label class="form-label">
-                    <i class="fas fa-toggle-on"></i> Trạng thái
-                  </label>
-                  <select class="form-select" th:field="*{trangThai}" required>
-                    <option value="Hoạt_động">Hoạt động</option>
-                    <option value="Ẩn">Ẩn</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <!-- Hiển thị thông tin khi update -->
-            <div th:if="${danhMuc.idDanhMuc != null}" class="alert alert-info">
-              <h6><i class="fas fa-info-circle"></i> Thông tin hiện tại:</h6>
-              <p class="mb-1"><strong>ID:</strong> <span th:text="${danhMuc.idDanhMuc}"></span></p>
-              <p class="mb-0"><strong>Ngày tạo:</strong>
-                <span th:text="${danhMuc.ngayTao != null ? #temporals.format(danhMuc.ngayTao, 'dd/MM/yyyy HH:mm') : 'Chưa có'}"></span>
-              </p>
-            </div>
-
-            <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i>
-                <span th:text="${danhMuc.idDanhMuc == null ? 'Thêm mới' : 'Cập nhật'}"></span>
-              </button>
-              <a th:href="@{/admin/danh-muc/list}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Quay lại
-              </a>
-            </div>
-          </form>
-        </div>
-      </div>
+    <div class="mb-3">
+      <label for="tenDanhMuc" class="form-label">Tên Danh Mục</label>
+      <input type="text" th:field="*{tenDanhMuc}" class="form-control" id="tenDanhMuc" required>
     </div>
-  </div>
+
+    <div class="mb-3">
+      <label for="moTa" class="form-label">Mô Tả</label>
+      <textarea th:field="*{moTa}" class="form-control" id="moTa"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="thuTuHienThi" class="form-label">Thứ Tự Hiển Thị</label>
+      <input type="number" th:field="*{thuTuHienThi}" class="form-control" id="thuTuHienThi">
+    </div>
+
+    <div class="mb-3">
+      <label for="trangThai" class="form-label">Trạng Thái</label>
+      <select th:field="*{trangThai}" class="form-select" id="trangThai">
+        <option th:value="Hoạt_động" th:text="'Hoạt động'"></option>
+        <option th:value="Ẩn" th:text="'Ẩn'"></option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a th:href="@{/admin/danh-muc/view}" class="btn btn-secondary">Hủy</a>
+  </form>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Tự động focus vào trường tên danh mục
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('input[name="tenDanhMuc"]').focus();
-  });
-
-  // Validation form
-  document.querySelector('form').addEventListener('submit', function(e) {
-    const tenDanhMuc = document.querySelector('input[name="tenDanhMuc"]').value.trim();
-
-    if (!tenDanhMuc) {
-      e.preventDefault();
-      alert('Vui lòng nhập tên danh mục!');
-      return false;
-    }
-
-    if (tenDanhMuc.length > 100) {
-      e.preventDefault();
-      alert('Tên danh mục không được vượt quá 100 ký tự!');
-      return false;
-    }
-  });
-</script>
 </body>
 </html>

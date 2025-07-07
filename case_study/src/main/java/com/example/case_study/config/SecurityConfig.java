@@ -26,7 +26,7 @@ public class SecurityConfig {
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/admin/laptop/view", true) // Redirect đúng URL sau login
+                        .defaultSuccessUrl("/admin/dashboard", true) // Redirect đúng URL sau login
                         .permitAll()
                 )
 

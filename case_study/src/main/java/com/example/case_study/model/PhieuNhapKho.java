@@ -2,8 +2,11 @@ package com.example.case_study.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,5 +35,7 @@ public class PhieuNhapKho {
 
     @Column(name = "ngay_nhap")
     private LocalDateTime ngayNhap = LocalDateTime.now();
-}
 
+    @OneToMany(mappedBy = "phieuNhapKho", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChiTietNhapKho> chiTietNhapKhoList = new ArrayList<>();
+}

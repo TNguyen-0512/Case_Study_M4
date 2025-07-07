@@ -1,170 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Quản lý Vai trò</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>Danh sách Vai trò</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container-fluid mt-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h2><i class="fas fa-users-cog"></i> Quản lý Vai trò & Phân quyền</h2>
-          <a th:href="@{/admin/vai-tro/create}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Thêm vai trò mới
-          </a>
-        </div>
-        <div class="card-body">
-          <!-- Tìm kiếm -->
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm vai trò...">
-            </div>
-            <div class="col-md-2">
-              <button class="btn btn-outline-secondary" onclick="clearSearch()">
-                <i class="fas fa-times"></i> Xóa tìm kiếm
-              </button>
-            </div>
-          </div>
-
-          <!-- Bảng danh sách -->
-          <div class="table-responsive">
-            <table class="table table-striped table-hover">
-              <thead class="table-dark">
-              <tr>
-                <th>ID</th>
-                <th>Tên vai trò</th>
-                <th>Mô tả quyền hạn</th>
-                <th>Số người dùng</th>
-                <th>Hành động</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="vaiTro : ${vaiTros}">
-                <td th:text="${vaiTro.idVaiTro}"></td>
-                <td>
-                  <span class="badge bg-primary fs-6" th:text="${vaiTro.tenVaiTro}"></span>
-                </td>
-                <td>
-                                    <span th:switch="${vaiTro.tenVaiTro}">
-                                        <span th:case="'ADMIN'" class="text-danger">
-                                            <i class="fas fa-crown"></i> Quản trị viên - Toàn quyền hệ thống
-                                        </span>
-                                        <span th:case="'MANAGER'" class="text-warning">
-                                            <i class="fas fa-user-tie"></i> Quản lý - Quản lý nhân viên và báo cáo
-                                        </span>
-                                        <span th:case="'EMPLOYEE'" class="text-info">
-                                            <i class="fas fa-user"></i> Nhân viên - Xử lý đơn hàng và nhập kho
-                                        </span>
-                                        <span th:case="'CUSTOMER'" class="text-success">
-                                            <i class="fas fa-shopping-cart"></i> Khách hàng - Đặt hàng và xem thông tin
-                                        </span>
-                                        <span th:case="*" class="text-muted">
-                                            <i class="fas fa-question-circle"></i> Vai trò tùy chỉnh
-                                        </span>
-                                    </span>
-                </td>
-                <td>
-                                    <span class="badge bg-secondary">
-                                        <i class="fas fa-users"></i>
-                                        <span th:text="${vaiTro.tenVaiTro == 'ADMIN' ? '2' : (vaiTro.tenVaiTro == 'EMPLOYEE' ? '15' : (vaiTro.tenVaiTro == 'CUSTOMER' ? '1,250' : '0'))}"></span>
-                                    </span>
-                </td>
-                <td>
-                  <div class="btn-group" role="group">
-                    <a th:href="@{'/admin/vai-tro/permissions/' + ${vaiTro.idVaiTro}}"
-                       class="btn btn-sm btn-info" title="Cấu hình quyền">
-                      <i class="fas fa-key"></i>
-                    </a>
-                    <a th:href="@{'/admin/vai-tro/update/' + ${vaiTro.idVaiTro}}"
-                       class="btn btn-sm btn-warning" title="Chỉnh sửa">
-                      <i class="fas fa-edit"></i>
-                    </a>
-                    <a th:if="${vaiTro.tenVaiTro != 'ADMIN'}"
-                       th:href="@{'/admin/vai-tro/delete/' + ${vaiTro.idVaiTro}}"
-                       class="btn btn-sm btn-danger" title="Xóa"
-                       onclick="return confirm('Bạn có chắc chắn muốn xóa vai trò này?\nLưu ý: Tất cả người dùng có vai trò này sẽ bị ảnh hưởng.')">
-                      <i class="fas fa-trash"></i>
-                    </a>
-                    <span th:if="${vaiTro.tenVaiTro == 'ADMIN'}"
-                          class="btn btn-sm btn-secondary disabled" title="Không thể xóa vai trò Admin">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Thông tin hướng dẫn -->
-          <div class="alert alert-info mt-4">
-            <h6><i class="fas fa-info-circle"></i> Hướng dẫn phân quyền:</h6>
-            <ul class="mb-0">
-              <li><strong>ADMIN:</strong> Toàn quyền hệ thống, không thể xóa</li>
-              <li><strong>MANAGER:</strong> Quản lý nhân viên, xem báo cáo, phê duyệt đơn hàng</li>
-              <li><strong>EMPLOYEE:</strong> Xử lý đơn hàng, nhập kho, quản lý sản phẩm</li>
-              <li><strong>CUSTOMER:</strong> Đặt hàng, xem lịch sử mua hàng</li>
-            </ul>
-          </div>
-
-          <!-- Thống kê -->
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <small class="text-muted">
-                Tổng cộng: <span th:text="${#lists.size(vaiTros)}"></span> vai trò
-              </small>
-            </div>
-            <div class="col-md-6 text-end">
-              <small class="text-muted">
-                Tổng người dùng: <span class="fw-bold">1,267</span>
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container mt-4">
+    <a href="http://localhost:8080/admin/dashboard" class="btn btn-outline-secondary mb-3">
+        <i class="fas fa-arrow-left me-1"></i> Quay lại Dashboard
+    </a>
+    <h1>Danh sách Vai trò</h1>
+    <a th:href="@{/admin/vai-tro/create}" class="btn btn-primary mb-3">Thêm mới Vai trò</a>
+    <table class="table table-bordered table-striped table-dark">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Vai Trò</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vaiTro : ${vaiTros}">
+            <td th:text="${vaiTro.idVaiTro}"></td>
+            <td th:text="${vaiTro.tenVaiTro}"></td>
+            <td>
+                <a th:href="@{'/admin/vai-tro/update/' + ${vaiTro.idVaiTro}}" class="btn btn-sm btn-warning">Sửa</a>
+                <a th:href="@{'/admin/vai-tro/delete/' + ${vaiTro.idVaiTro}}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Bạn có chắc chắn muốn xoá vai trò này?')">Xoá</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Tìm kiếm
-  document.getElementById('searchInput').addEventListener('keyup', function() {
-    const searchTerm = this.value.toLowerCase();
-    const rows = document.querySelectorAll('tbody tr');
-
-    rows.forEach(row => {
-      const tenVaiTro = row.cells[1].textContent.toLowerCase();
-      const moTa = row.cells[2].textContent.toLowerCase();
-
-      if (tenVaiTro.includes(searchTerm) || moTa.includes(searchTerm)) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
-  });
-
-  // Xóa tìm kiếm
-  function clearSearch() {
-    document.getElementById('searchInput').value = '';
-    const rows = document.querySelectorAll('tbody tr');
-    rows.forEach(row => row.style.display = '');
-  }
-
-  // Hiệu ứng hover cho các hàng
-  document.querySelectorAll('tbody tr').forEach(row => {
-    row.addEventListener('mouseenter', function() {
-      this.style.backgroundColor = '#f8f9fa';
-    });
-    row.addEventListener('mouseleave', function() {
-      this.style.backgroundColor = '';
-    });
-  });
-</script>
 </body>
 </html>
