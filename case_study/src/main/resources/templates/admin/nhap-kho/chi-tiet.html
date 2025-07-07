@@ -37,8 +37,8 @@
         <tr th:each="ct : ${phieuNhap.chiTietNhapKhoList}">
             <td th:text="${ct.laptop != null ? ct.laptop.tenLaptop : 'N/A'}"></td>
             <td th:text="${ct.soLuongNhap}"></td>
-            <td th:text="${ct.giaNhap} + ' ₫'"></td>
-            <td th:text="${ct.thanhTien} + ' ₫'"></td>
+            <td th:text="|${#numbers.formatDecimal(ct.giaNhap, 0, 'COMMA', 0, 'POINT')} VND|"></td>
+            <td th:text="|${#numbers.formatDecimal(ct.thanhTien, 0, 'COMMA', 0, 'POINT')} VND|"></td>
         </tr>
         </tbody>
     </table>

@@ -26,10 +26,9 @@
         <tr th:each="dh : ${donHangs}">
             <td th:text="${dh.maDonHang}"></td>
             <td th:text="${dh.khachHang.hoTen}"></td>
-            <!-- Hiển thị số đơn giản -->
-            <td th:text="${dh.tongThanhToan} + ' ₫'"></td>
+            <td th:text="${#numbers.formatDecimal(dh.tongThanhToan,0, 'COMMA', 0, 'POINT')} + ' VND'"></td>
             <td th:text="${dh.trangThaiDonHang}"></td>
-            <td th:text="${#temporals.format(dh.ngayDatHang.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(dh.ngayDatHang, 'dd/MM/yyyy HH:mm')}"></td>
             <td>
                 <a th:href="@{'/admin/don-hang/chi-tiet/' + ${dh.idDonHang}}" class="btn btn-sm btn-info">Chi tiết</a>
             </td>

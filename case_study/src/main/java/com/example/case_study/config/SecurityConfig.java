@@ -18,24 +18,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/", "/login", "/register",
+                                "/css/**", "/js/**", "/images/**", "/webjars/**",
+                                "/product/**", "/product/detail/**", "/error"
+                        ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/admin/dashboard", true) // Redirect đúng URL sau login
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
-
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/")
                         .permitAll()
                 )
-                .authenticationProvider(authenticationProvider());  // ⚡ BỔ SUNG DÒNG NÀY
+                .authenticationProvider(authenticationProvider());
 
         return http.build();
     }

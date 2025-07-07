@@ -3,6 +3,8 @@ package com.example.case_study.controller;
 import com.example.case_study.model.Laptop;
 import com.example.case_study.service.ILaptopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,8 @@ public class LaptopViewController {
 
     @GetMapping("/view")
     public String list(Model model) {
-        model.addAttribute("laptops", laptopService.findAll());
+        Pageable pageable = PageRequest.of(0, 10);
+        model.addAttribute("laptops", laptopService.findAll(pageable));
         return "admin/laptop/list";
     }
 
@@ -32,10 +35,9 @@ public class LaptopViewController {
         return "redirect:/admin/laptop/view";
     }
 
-    // Sửa lại đường dẫn để khớp với HTML
     @GetMapping("/view/update/{id}")
-    public String updateForm(@PathVariable Integer id, Model model) {
-        Laptop laptop = laptopService.findById(id).orElseThrow();
+    public String updateForm(@PathVariable Long id, Model model) {
+        Laptop laptop = laptopService.findById(id);
         model.addAttribute("laptop", laptop);
         return "admin/laptop/form";
     }
@@ -47,10 +49,9 @@ public class LaptopViewController {
         return "redirect:/admin/laptop/view";
     }
 
-    // Sửa lại đường dẫn để khớp với HTML
     @GetMapping("/view/delete/{id}")
-    public String delete(@PathVariable Integer id) {
-        laptopService.deleteById(id);
+    public String delete(@PathVariable Long id) {
+        laptopService.delete(id);
         return "redirect:/admin/laptop/view";
     }
 }

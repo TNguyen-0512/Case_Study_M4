@@ -29,7 +29,7 @@
       <td th:text="${laptop.idLaptop}"></td>
       <td th:text="${laptop.tenLaptop}"></td>
       <td th:text="${laptop.model}"></td>
-      <td th:text="${laptop.giaBan.intValue()} + ' ₫'"></td>
+      <td th:text="|${#numbers.formatDecimal(laptop.giaBan, 0, 'COMMA', 0, 'POINT')} VND|"></td>
       <td th:text="${laptop.soLuongTon}"></td>
       <td th:text="${laptop.trangThai}"></td>
       <td>

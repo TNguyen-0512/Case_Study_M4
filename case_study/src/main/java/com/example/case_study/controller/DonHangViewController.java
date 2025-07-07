@@ -22,11 +22,10 @@ public class DonHangViewController {
 
     @GetMapping("/chi-tiet/{id}")
     public String chiTiet(@PathVariable Integer id, Model model) {
-        DonHang donHang = donHangService.findById(id).orElseThrow();
+        DonHang donHang = donHangService.findById(id).orElse(null);
         model.addAttribute("donHang", donHang);
         return "admin/don-hang/chi-tiet";
     }
-
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         donHangService.deleteById(id);
